@@ -21,6 +21,31 @@ const AIIcon: React.FC<{className?: string}> = ({className}) => (
   </svg>
 );
 
+// New component to render text with clickable links
+const LinkifiedText: React.FC<{ text: string; isUser: boolean }> = ({ text, isUser }) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const parts = text.split(urlRegex);
+
+    const linkClasses = isUser 
+        ? "text-white font-medium underline hover:text-blue-200"
+        : "text-blue-700 font-medium underline hover:text-blue-500";
+
+    return (
+        <p className="whitespace-pre-wrap">
+            {parts.map((part, index) => {
+                if (part.match(urlRegex)) {
+                    return (
+                        <a key={index} href={part} target="_blank" rel="noopener noreferrer" className={linkClasses}>
+                            {part}
+                        </a>
+                    );
+                }
+                return <React.Fragment key={index}>{part}</React.Fragment>;
+            })}
+        </p>
+    );
+};
+
 
 const Message: React.FC<MessageProps> = ({ message }) => {
   const isUser = message.role === Role.USER;
@@ -38,7 +63,7 @@ const Message: React.FC<MessageProps> = ({ message }) => {
       <div className="flex-shrink-0 mt-1">{icon}</div>
       <div className={`flex flex-col max-w-lg md:max-w-xl lg:max-w-2xl`}>
         <div className={`px-4 py-3 rounded-xl shadow-sm ${bubbleClasses}`}>
-          <p className="whitespace-pre-wrap">{message.text}</p>
+          <LinkifiedText text={message.text} isUser={isUser} />
         </div>
         
         {(message.sentiment || message.entities) && (
