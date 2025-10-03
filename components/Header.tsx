@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import type { View } from '../App';
 
 const ShareIcon: React.FC<{className?: string}> = ({className}) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
@@ -42,8 +43,18 @@ const fallbackCopyToClipboard = (text: string): boolean => {
   return success;
 };
 
-const Header: React.FC = () => {
+const viewDetails: Record<View, { title: string; subtitle: string }> = {
+    analyzer: { title: 'Text Analyzer', subtitle: 'Analyze articles and financial text with AI' },
+    dashboard: { title: 'Market Overview', subtitle: 'A snapshot of current market trends' },
+    portfolio: { title: 'My Portfolio', subtitle: 'Track and analyze your investments' },
+    whatif: { title: 'What-If Analysis', subtitle: 'Simulate potential market scenarios' },
+    fraud: { title: 'Fraud & Risk', subtitle: 'Leverage AI for fraud detection and risk management' },
+};
+
+
+const Header: React.FC<{ activeView: View }> = ({ activeView }) => {
   const [isCopied, setIsCopied] = useState(false);
+  const { title, subtitle } = viewDetails[activeView];
 
   const handleShare = async () => {
     const url = window.location.href;
@@ -53,28 +64,22 @@ const Header: React.FC = () => {
       url: url,
     };
 
-    // Primary Action: Use Web Share API if available (typically on mobile).
     if (navigator.share) {
       try {
         await navigator.share(shareData);
-        // The share dialog was successful.
         return;
       } catch (err) {
-        // The user cancelled the share dialog or it failed.
-        // We don't fall back to copying, as cancellation is intentional.
         console.log("Share API was cancelled or failed.", err);
         return;
       }
     }
 
-    // Fallback Action: Copy to clipboard (typically on desktop).
     try {
       await navigator.clipboard.writeText(url);
       setIsCopied(true);
       setTimeout(() => setIsCopied(false), 2000);
     } catch (err) {
       console.warn('Could not copy text with Clipboard API, trying fallback: ', err);
-      // Final Fallback: Use the deprecated `execCommand`.
       const success = fallbackCopyToClipboard(url);
       if (success) {
         setIsCopied(true);
@@ -87,27 +92,27 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="bg-slate-800 text-white shadow-md">
-      <div className="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+    <header className="bg-white text-slate-900 border-b border-slate-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">FinAI</h1>
-          <p className="text-sm text-slate-300">Your Personal Financial Text Analyzer</p>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-800">{title}</h1>
+          <p className="text-sm text-slate-500">{subtitle}</p>
         </div>
         <div className="relative">
           <button 
             onClick={handleShare} 
-            className="p-2 rounded-full hover:bg-slate-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-white group"
+            className="p-2 rounded-full hover:bg-slate-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-500 group"
             aria-label={isCopied ? "Link copied!" : "Share or copy link"}
           >
             {isCopied ? (
-              <CheckIcon className="w-6 h-6 text-green-400" />
+              <CheckIcon className="w-6 h-6 text-green-500" />
             ) : (
-              <ShareIcon className="w-6 h-6 text-slate-300" />
+              <ShareIcon className="w-6 h-6 text-slate-500" />
             )}
           </button>
-          <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-slate-900 text-white text-xs font-medium rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">
+          <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-slate-800 text-white text-xs font-medium rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">
             {isCopied ? "Copied!" : "Share Link"}
-            <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-slate-900"></div>
+            <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-slate-800"></div>
           </div>
         </div>
       </div>
