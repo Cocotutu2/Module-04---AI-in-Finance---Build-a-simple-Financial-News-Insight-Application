@@ -1,39 +1,46 @@
 import React from 'react';
+import { getSampleArticles } from '../services/newsService';
 
 interface SuggestionChipsProps {
-    onSelect: (prompt: string) => void;
-    isLoading: boolean;
+  onSuggestionClick: (suggestion: string) => void;
+  isLoading: boolean;
 }
 
-const suggestions = [
-    {
-        emoji: '📈',
-        text: 'Analyze latest market news'
-    },
-    {
-        emoji: '💡',
-        text: 'What is a stock split?'
-    },
-];
+const SuggestionChips: React.FC<SuggestionChipsProps> = ({ onSuggestionClick, isLoading }) => {
+  const articles = getSampleArticles();
 
-const SuggestionChips: React.FC<SuggestionChipsProps> = ({ onSelect, isLoading }) => {
-    return (
-        <div className="px-4 pb-2">
-            <div className="max-w-4xl mx-auto flex flex-wrap justify-center gap-2">
-                {suggestions.map((suggestion) => (
-                    <button
-                        key={suggestion.text}
-                        onClick={() => onSelect(suggestion.text)}
-                        disabled={isLoading}
-                        className="px-4 py-2 bg-white border border-slate-300 rounded-full text-sm font-medium text-slate-700 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-                    >
-                        <span className="mr-2">{suggestion.emoji}</span>
-                        {suggestion.text}
-                    </button>
-                ))}
-            </div>
+  const questions = [
+    "What is a P/E ratio?",
+    "Explain quantitative easing.",
+  ];
+
+  return (
+    <div className="max-w-4xl mx-auto w-full px-6 py-4">
+        <p className="text-sm text-slate-500 mb-3 text-center">Try an example:</p>
+        <div className="flex flex-wrap justify-center gap-2">
+            {articles.map((article) => (
+                <button
+                key={article.id}
+                onClick={() => onSuggestionClick(article.content)}
+                disabled={isLoading}
+                className="bg-white text-slate-700 text-sm font-medium px-4 py-2 rounded-full border border-slate-300 hover:bg-slate-100 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                Analyze: "{article.headline}"
+                </button>
+            ))}
+            {questions.map((q) => (
+                <button
+                key={q}
+                onClick={() => onSuggestionClick(q)}
+                disabled={isLoading}
+                className="bg-white text-slate-700 text-sm font-medium px-4 py-2 rounded-full border border-slate-300 hover:bg-slate-100 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                {q}
+                </button>
+            ))}
         </div>
-    );
+    </div>
+  );
 };
 
 export default SuggestionChips;

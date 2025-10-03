@@ -1,6 +1,6 @@
 export enum Role {
   USER = 'user',
-  AI = 'ai',
+  MODEL = 'model',
 }
 
 export interface Entity {
@@ -9,16 +9,20 @@ export interface Entity {
   description: string;
 }
 
-export interface Message {
+export interface Analysis {
+  summary: string;
+  sentiment: 'Positive' | 'Negative' | 'Neutral';
+  sentimentScore: number;
+  entities: Entity[];
+}
+
+// A message can be a simple text message or a full analysis from the model.
+export interface Message extends Partial<Analysis> {
   id: string;
   role: Role;
   text: string;
-  sentiment?: 'Positive' | 'Negative' | 'Neutral';
-  sentimentScore?: number;
-  entities?: Entity[];
 }
 
-// FIX: Add missing Source type definition.
 export interface Source {
   uri: string;
   title: string;

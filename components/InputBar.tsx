@@ -30,7 +30,7 @@ const InputBar: React.FC<InputBarProps> = ({ onSendMessage, isLoading }) => {
   };
 
   return (
-    <div className="bg-white/80 backdrop-blur-sm border-t border-slate-200 p-4">
+    <div className="bg-white/80 backdrop-blur-sm p-4">
       <form onSubmit={handleFormSubmit} className="max-w-4xl mx-auto">
         <div className="flex items-start space-x-3">
           <textarea

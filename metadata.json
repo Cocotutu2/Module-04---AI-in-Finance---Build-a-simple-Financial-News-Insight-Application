@@ -1,5 +1,5 @@
 {
-  "name": "AI Finance Chatbox",
+  "name": "AI Finance Assistant",
   "description": "A simple AI-powered financial assistant that can answer questions, analyze data, and provide insights on financial topics using Google's Gemini API.",
   "requestFramePermissions": []
 }
