@@ -24,6 +24,12 @@ const FingerprintIcon = ({ className = '' }) => (
     </svg>
 );
 
+const LightningBoltIcon = ({ className = '' }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
+    </svg>
+);
+
 
 const fraudModules = [
     {
@@ -71,6 +77,24 @@ const fraudModules = [
                     <p className="text-lg font-bold text-amber-800">17</p>
                     <p className="text-xs text-amber-700">High-Risk Alerts</p>
                 </div>
+            </div>
+        )
+    },
+    {
+        icon: LightningBoltIcon,
+        title: "AI-Powered High-Frequency Trading",
+        description: "An AI-driven system that analyzes real-time market data to execute thousands of trades per second, capitalizing on fleeting price movements too fast for human traders.",
+        mockUI: (
+            <div className="mt-2 p-2 bg-slate-100 rounded-md text-xs font-mono text-slate-600 space-y-1 overflow-y-auto h-24">
+                <p>14:30:01.102 | BUY | TGI | 100 @ 215.51</p>
+                <p>14:30:01.315 | SELL| TGI | 100 @ 215.53</p>
+                <p className="text-green-600">Profit: +$2.00</p>
+                <p>14:30:01.640 | BUY | AMG | 50 @ 140.20</p>
+                <p>14:30:01.899 | SELL| AMG | 50 @ 140.21</p>
+                <p className="text-green-600">Profit: +$0.50</p>
+                <p>14:30:02.112 | BUY | FINC| 200 @ 85.75</p>
+                <p>14:30:02.450 | SELL| FINC| 200 @ 85.74</p>
+                <p className="text-red-600">Profit: -$2.00</p>
             </div>
         )
     },
