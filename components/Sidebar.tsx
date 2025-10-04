@@ -26,9 +26,27 @@ const WhatIfIcon = ({ className = '' }) => (
   </svg>
 );
 
-const FraudIcon = ({ className = '' }) => (
+const ShieldIcon = ({ className = '' }) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className={className}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.286Z" />
+    </svg>
+);
+
+const TradingIcon = ({ className = '' }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+    </svg>
+);
+
+const CustomerServiceIcon = ({ className = '' }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m12 0-3-3m-3 3 3-3m-3-3v9.75m-6-9.75v9.75m0 0-3-3m3 3 3-3" />
+    </svg>
+);
+
+const InfoIcon = ({ className = '' }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
     </svg>
 );
 
@@ -37,8 +55,11 @@ const navItems = [
   { id: 'dashboard', label: 'Dashboard', icon: DashboardIcon },
   { id: 'portfolio', label: 'Portfolio', icon: PortfolioIcon },
   { id: 'analyzer', label: 'Text Analyzer', icon: AnalyzerIcon },
+  { id: 'trading', label: 'Trading', icon: TradingIcon },
+  { id: 'risk', label: 'Risk Management', icon: ShieldIcon },
+  { id: 'customerService', label: 'Customer Service', icon: CustomerServiceIcon },
   { id: 'whatif', label: 'What-If Analysis', icon: WhatIfIcon },
-  { id: 'fraud', label: 'Fraud & Risk', icon: FraudIcon },
+  { id: 'projectInfo', label: 'Project Info', icon: InfoIcon },
 ] as const;
 
 interface SidebarProps {

@@ -5,9 +5,12 @@ import TextAnalyzer from './views/TextAnalyzer';
 import Dashboard from './views/Dashboard';
 import Portfolio from './views/Portfolio';
 import WhatIfAnalysis from './views/WhatIfAnalysis';
-import FraudRisk from './views/FraudRisk';
+import RiskManagement from './views/RiskManagement';
+import Trading from './views/Trading';
+import CustomerService from './views/CustomerService';
+import ProjectInfo from './views/ProjectInfo';
 
-export type View = 'analyzer' | 'dashboard' | 'portfolio' | 'whatif' | 'fraud';
+export type View = 'analyzer' | 'dashboard' | 'portfolio' | 'whatif' | 'risk' | 'trading' | 'customerService' | 'projectInfo';
 
 const App: React.FC = () => {
   const [activeView, setActiveView] = useState<View>('dashboard');
@@ -22,8 +25,14 @@ const App: React.FC = () => {
         return <Portfolio />;
       case 'whatif':
         return <WhatIfAnalysis />;
-      case 'fraud':
-        return <FraudRisk />;
+      case 'risk':
+        return <RiskManagement />;
+      case 'trading':
+        return <Trading />;
+      case 'customerService':
+        return <CustomerService />;
+      case 'projectInfo':
+        return <ProjectInfo />;
       default:
         return <Dashboard />;
     }

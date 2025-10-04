@@ -27,3 +27,13 @@ export interface Source {
   uri: string;
   title: string;
 }
+
+export interface Holding {
+  id: string;
+  symbol: string;
+  name: string;
+  shares: number;
+  price: number;
+  dayChange: number;
+  value: number;
+}

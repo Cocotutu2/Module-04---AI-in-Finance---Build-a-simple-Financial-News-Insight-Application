@@ -1,42 +1,43 @@
-import React, { useState } from 'react';
-import { getSampleArticles, NewsArticle } from '../services/newsService';
+import React, { useState, useEffect } from 'react';
+import { getMarketData } from '../services/geminiService';
 
-const marketIndices = [
-    { name: 'S&P 500', value: '5,432.10', change: '+25.40', percentChange: '+0.47%', isPositive: true },
-    { name: 'Dow Jones', value: '39,876.54', change: '-50.12', percentChange: '-0.13%', isPositive: false },
-    { name: 'NASDAQ', value: '17,890.12', change: '+150.78', percentChange: '+0.85%', isPositive: true },
-];
+const NewspaperIcon = ({ className = '' }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5" />
+    </svg>
+);
 
-const topMovers = {
-    gainers: [
-        { symbol: 'ABC', price: '150.25', change: '+10.15', percentChange: '+7.25%' },
-        { symbol: 'DEF', price: '75.50', change: '+5.40', percentChange: '+6.80%' },
-        { symbol: 'GHI', price: '210.80', change: '+12.30', percentChange: '+6.20%' },
-    ],
-    losers: [
-        { symbol: 'XYZ', price: '95.60', change: '-8.50', percentChange: '-8.15%' },
-        { symbol: 'UVW', price: '120.75', change: '-9.20', percentChange: '-7.10%' },
-        { symbol: 'RST', price: '50.10', change: '-3.10', percentChange: '-5.80%' },
-    ]
-};
-
-const sectorPerformance = [
-    { name: 'Technology', change: '+1.85%', isPositive: true, width: '80%' },
-    { name: 'Healthcare', change: '+0.95%', isPositive: true, width: '65%' },
-    { name: 'Financials', change: '-0.25%', isPositive: false, width: '45%' },
-    { name: 'Consumer Goods', change: '+0.40%', isPositive: true, width: '55%' },
-    { name: 'Energy', change: '-1.15%', isPositive: false, width: '30%' },
-];
 
 const Dashboard: React.FC = () => {
+    const [data, setData] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                const marketData = await getMarketData();
+                setData(marketData);
+            } catch (error) {
+                console.error("Failed to fetch market data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
+
     const [activeMoversTab, setActiveMoversTab] = useState<'gainers' | 'losers'>('gainers');
-    const newsArticles = getSampleArticles();
+
+    if (loading) {
+        return <DashboardSkeleton />;
+    }
 
     return (
         <div className="p-4 sm:p-6 lg:p-8 space-y-6">
             {/* Market Indices */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                {marketIndices.map(index => (
+                {data.marketIndices.map((index: any) => (
                     <div key={index.name} className="bg-white p-4 rounded-lg shadow border border-slate-200">
                         <p className="text-sm font-medium text-slate-500">{index.name}</p>
                         <p className="text-2xl font-semibold text-slate-800">{index.value}</p>
@@ -53,7 +54,7 @@ const Dashboard: React.FC = () => {
                 <div className="lg:col-span-1 bg-white p-4 rounded-lg shadow border border-slate-200">
                     <h3 className="text-lg font-semibold text-slate-800 mb-4">Sector Performance</h3>
                     <div className="space-y-4">
-                        {sectorPerformance.map(sector => (
+                        {data.sectorPerformance.map((sector: any) => (
                             <div key={sector.name}>
                                 <div className="flex justify-between text-sm mb-1">
                                     <span className="font-medium text-slate-600">{sector.name}</span>
@@ -84,7 +85,7 @@ const Dashboard: React.FC = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {topMovers[activeMoversTab].map(mover => (
+                                {data.topMovers[activeMoversTab].map((mover: any) => (
                                     <tr key={mover.symbol} className="border-t border-slate-100">
                                         <td className="p-2 font-semibold text-slate-800">{mover.symbol}</td>
                                         <td className="p-2 text-slate-700">${mover.price}</td>
@@ -100,12 +101,15 @@ const Dashboard: React.FC = () => {
 
             {/* Latest News */}
             <div className="bg-white p-4 rounded-lg shadow border border-slate-200">
-                <h3 className="text-lg font-semibold text-slate-800 mb-4">Latest Financial News</h3>
-                <div className="space-y-4">
-                    {newsArticles.map(article => (
-                        <div key={article.id} className="border-b border-slate-100 pb-3 last:border-b-0 last:pb-0">
-                            <p className="font-semibold text-slate-800 hover:text-blue-600 cursor-pointer">{article.headline}</p>
-                            <p className="text-sm text-slate-500 line-clamp-2">{article.content}</p>
+                <div className="flex items-center space-x-3 mb-4">
+                    <NewspaperIcon className="w-6 h-6 text-slate-600" />
+                    <h3 className="text-lg font-semibold text-slate-800">Latest Financial News</h3>
+                </div>
+                <div className="space-y-3">
+                    {data.newsHeadlines.map((news: any, index: number) => (
+                        <div key={index} className="border-t border-slate-100 pt-3">
+                            <p className="font-medium text-slate-800">{news.headline}</p>
+                            <p className="text-xs text-slate-500">{news.source}</p>
                         </div>
                     ))}
                 </div>
@@ -113,5 +117,22 @@ const Dashboard: React.FC = () => {
         </div>
     );
 };
+
+
+const DashboardSkeleton = () => (
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6 animate-pulse">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div className="h-24 bg-slate-200 rounded-lg"></div>
+            <div className="h-24 bg-slate-200 rounded-lg"></div>
+            <div className="h-24 bg-slate-200 rounded-lg"></div>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-1 bg-slate-200 rounded-lg h-64"></div>
+            <div className="lg:col-span-2 bg-slate-200 rounded-lg h-64"></div>
+        </div>
+        <div className="bg-slate-200 rounded-lg h-48"></div>
+    </div>
+);
+
 
 export default Dashboard;

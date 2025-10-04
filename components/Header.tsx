@@ -48,7 +48,10 @@ const viewDetails: Record<View, { title: string; subtitle: string }> = {
     dashboard: { title: 'Market Overview', subtitle: 'A snapshot of current market trends' },
     portfolio: { title: 'My Portfolio', subtitle: 'Track and analyze your investments' },
     whatif: { title: 'What-If Analysis', subtitle: 'Simulate potential market scenarios' },
-    fraud: { title: 'Fraud & Risk', subtitle: 'Leverage AI for fraud detection and risk management' },
+    risk: { title: 'Risk Management', subtitle: 'AI-powered fraud detection and threat analysis' },
+    trading: { title: 'HFT Dashboard', subtitle: 'Monitor AI-powered high-frequency trading' },
+    customerService: { title: 'Customer Service AI', subtitle: 'Engage with our AI-powered virtual assistant' },
+    projectInfo: { title: 'Project Information', subtitle: 'Architecture, features, and technical details' },
 };
 
 
