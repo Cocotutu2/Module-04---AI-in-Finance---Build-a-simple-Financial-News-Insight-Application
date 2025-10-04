@@ -1,6 +1,6 @@
 # FinAI: AI Finance Assistant
 
-A prototype application that demonstrates the power of Large Language Models (LLMs) in the finance sector. This app provides a suite of tools for financial analysis, data visualization, and risk assessment, all powered by Google's Gemini API.
+A prototype application that demonstrates the power of Large Language Models (LLMs) in the finance sector. This app provides a suite of tools for financial analysis, data visualization, and risk assessment, created by by Google's Gemini API.
 
 ## Features
 
